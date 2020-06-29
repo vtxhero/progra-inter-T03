@@ -1,0 +1,74 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8" />
+    <title>Making your first Phaser 3 Game - Part 10</title>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+var config = {
+    width: 800,
+    height: 800,
+    type: Phaser.AUTO,
+    parent: 'phaser-example',
+    scene: {
+        create: create,
+        update: update
+    }
+};
+
+var game = new Phaser.Game(config);
+var graphics;
+var circle;
+var player;
+var tam = 10;
+
+function create ()
+{
+    graphics = this.add.graphics({ fillStyle: { color: 0xaa0000} });
+    circle = new Phaser.Geom.Circle(Phaser.Math.Between(5, 795), Phaser.Math.Between(5, 795), 10);
+    player = new Phaser.Geom.Circle(400, 400, tam);
+
+
+
+    this.input.on('pointermove', function (pointer) {
+        player.x = pointer.x;
+        player.y = pointer.y;
+    });
+
+}
+
+function update ()
+{
+
+    graphics.clear();
+    graphics.fillCircleShape(circle);
+
+    graphics.lineStyle(4, 0xaa0000);
+    graphics.fillCircleShape(player);
+
+    if (Phaser.Geom.Intersects.CircleToCircle(circle, player))
+    {
+        graphics.lineStyle(4, 0xaa0000);
+        player.radius += 5;
+        circle.x=Phaser.Math.Between(5, 795);
+        circle.y=Phaser.Math.Between(5, 795);
+    }
+    else
+    {
+        graphics.lineStyle(4, 0x00aa00);
+    }
+
+    graphics.strokeCircleShape(player);
+}
+</script>
+
+</body>
+</html>
